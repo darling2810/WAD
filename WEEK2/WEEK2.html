@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ShopEase — Bootstrap Shopping Cart</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">ShopEase</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showSection('register')"
+                >Register</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showSection('login')"
+                >Login</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showSection('catalog')"
+                >Catalog</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showSection('cart')"
+                >Cart <span class="badge bg-info" id="cart-count">0</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-4">
+      <!-- Register -->
+      <section id="register" class="d-none">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h2 class="card-title mb-4">Register</h2>
+                <form>
+                  <div class="mb-3">
+                    <label for="reg-username" class="form-label"
+                      >Username</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="reg-username"
+                      placeholder="Enter username"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="reg-password" class="form-label"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="reg-password"
+                      placeholder="Enter password"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-success w-100"
+                    onclick="registerUser()"
+                  >
+                    Register
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Login -->
+      <section id="login" class="d-none">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h2 class="card-title mb-4">Login</h2>
+                <form>
+                  <div class="mb-3">
+                    <label for="login-username" class="form-label"
+                      >Username</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="login-username"
+                      placeholder="Enter username"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="login-password" class="form-label"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="login-password"
+                      placeholder="Enter password"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-primary w-100"
+                    onclick="loginUser()"
+                  >
+                    Login
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Catalog -->
+      <section id="catalog" class="d-none">
+        <h2 class="mb-4">Product Catalog</h2>
+        <div class="row g-4" id="catalog-items"></div>
+      </section>
+
+      <!-- Cart -->
+      <section id="cart" class="d-none">
+        <h2 class="mb-4">Your Cart</h2>
+        <div class="list-group" id="cart-items"></div>
+      </section>
+    </div>
+
+    <!-- Bootstrap JS & Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const products = [
+        {
+          id: 1,
+          name: "Widget A",
+          price: 25,
+          image: "https://via.placeholder.com/300",
+        },
+        {
+          id: 2,
+          name: "Widget B",
+          price: 35,
+          image: "https://via.placeholder.com/300",
+        },
+        {
+          id: 3,
+          name: "Widget C",
+          price: 45,
+          image: "https://via.placeholder.com/300",
+        },
+      ];
+      let cart = [];
+
+      function showSection(id) {
+        document
+          .querySelectorAll("section")
+          .forEach((sec) => sec.classList.add("d-none"));
+        document.getElementById(id).classList.remove("d-none");
+        if (id === "catalog") renderCatalog();
+        if (id === "cart") renderCart();
+      }
+
+      function registerUser() {
+        alert("Registration successful! Please login.");
+        showSection("login");
+      }
+
+      function loginUser() {
+        alert("Login successful!");
+        showSection("catalog");
+      }
+
+      function renderCatalog() {
+        const container = document.getElementById("catalog-items");
+        container.innerHTML = "";
+        products.forEach((p) => {
+          const col = document.createElement("div");
+          col.className = "col-sm-6 col-lg-4";
+          col.innerHTML = `
+          <div class="card h-100 shadow-sm">
+            <img src="${p.image}" class="card-img-top" alt="${p.name}" />
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${p.name}</h5>
+              <p class="card-text">$${p.price}</p>
+              <button class="btn btn-primary mt-auto" onclick="addToCart(${p.id})">Add to Cart</button>
+            </div>
+          </div>
+        `;
+          container.appendChild(col);
+        });
+      }
+
+      function addToCart(id) {
+        const prod = products.find((p) => p.id === id);
+        cart.push(prod);
+        document.getElementById("cart-count").textContent = cart.length;
+      }
+
+      function renderCart() {
+        const list = document.getElementById("cart-items");
+        list.innerHTML = "";
+        cart.forEach((item, idx) => {
+          const entry = document.createElement("div");
+          entry.className =
+            "list-group-item d-flex justify-content-between align-items-center";
+          entry.innerHTML = `
+          <div>${item.name} - $${item.price}</div>
+          <button class="btn btn-danger btn-sm" onclick="removeFromCart(${idx})">Remove</button>
+        `;
+          list.appendChild(entry);
+        });
+      }
+
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        document.getElementById("cart-count").textContent = cart.length;
+        renderCart();
+      }
+
+      // Show login by default
+      showSection("register");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+// This is a simplified React application structure for a Student Management System
+// featuring Registration, Login, Contact, About pages with React Router.
+
+// package.json dependencies (add these):
+// "react", "react-dom", "react-router-dom"
+
+/* src/index.js */
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+/* src/App.js */
+import React from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
+import Registration from './pages/Registration';
+import Login from './pages/Login';
+import Contact from './pages/Contact';
+import About from './pages/About';
+
+export default function App() {
+  return (
+    <div>
+      <nav style={{ padding: '1rem', background: '#f0f0f0' }}>
+        <Link to="/register" style={{ margin: '0 1rem' }}>Register</Link>
+        <Link to="/login" style={{ margin: '0 1rem' }}>Login</Link>
+        <Link to="/contact" style={{ margin: '0 1rem' }}>Contact</Link>
+        <Link to="/about" style={{ margin: '0 1rem' }}>About</Link>
+      </nav>
+      <main style={{ padding: '1rem' }}>
+        <Routes>
+          <Route path="/register" element={<Registration />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<Login />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
+/* src/pages/Registration.js */
+import React, { useState } from 'react';
+
+export default function Registration() {
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('Registration data:', form);
+    alert('Registered successfully!');
+  };
+
+  return (
+    <div>
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name:</label>
+          <input name="name" value={form.name} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" value={form.password} onChange={handleChange} required />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  );
+}
+
+/* src/pages/Login.js */
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export default function Login() {
+  const [creds, setCreds] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
+  const handleChange = e => setCreds({ ...creds, [e.target.name]: e.target.value });
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('Login data:', creds);
+    // simulate auth
+    if (creds.email && creds.password) {
+      alert('Login successful!');
+      navigate('/about');
+    }
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" value={creds.email} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" value={creds.password} onChange={handleChange} required />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
+}
+
+/* src/pages/Contact.js */
+import React from 'react';
+
+export default function Contact() {
+  return (
+    <div>
+      <h2>Contact Us</h2>
+      <p>Email: support@school.com</p>
+      <p>Phone: +1 234 567 890</p>
+    </div>
+  );
+}
+
+/* src/pages/About.js */
+import React from 'react';
+
+export default function About() {
+  return (
+    <div>
+      <h2>About Our School</h2>
+      <p>Welcome to our Student Management System. We manage student records efficiently.</p>
+    </div>
+  );
+}
+
+/* To run:
+1. npx create-react-app student-management
+2. cd student-management
+3. npm install react-router-dom
+4. Replace src/* files with above.
+5. npm start
+*/

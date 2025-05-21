@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Link to DTD for DTD-based parsers -->
+<!DOCTYPE bookstore SYSTEM "bookstore.dtd">
+
+<!-- Link to XSD for schema-aware parsers -->
+<!--
+<bookstore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="bookstore.xsd">
+-->
+<bookstore>
+  <!-- First Book -->
+  <book category="Fiction">
+    <title lang="en">The Great Gatsby</title>
+    <author>F. Scott Fitzgerald</author>
+    <year>1925</year>
+    <price currency="USD">10.99</price>
+  </book>
+
+  <!-- Second Book -->
+  <book category="Science">
+    <title lang="en">A Brief History of Time</title>
+    <author>Stephen Hawking</author>
+    <year>1988</year>
+    <price currency="USD">15.50</price>
+  </book>
+
+  <!-- Third Book -->
+  <book category="Philosophy">
+    <title lang="en">Meditations</title>
+    <author>Marcus Aurelius</author>
+    <year>0180</year>
+    <price currency="USD">9.75</price>
+  </book>
+</bookstore>

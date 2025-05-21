@@ -1,0 +1,20 @@
+<!ENTITY % categories "Fiction | Science | Philosophy | History | Biography">
+
+<!ELEMENT bookstore (book+)>                            
+<!ELEMENT book (title, author, year, price)>            
+<!ATTLIST book
+          category (%categories;) #REQUIRED>
+
+<!ELEMENT title (#PCDATA)>                              
+<!ATTLIST title
+          lang CDATA #IMPLIED>
+
+<!ELEMENT author (#PCDATA)>                             
+
+<!ELEMENT year (#PCDATA)>                               
+<!ATTLIST year
+          era (AD | BC) "AD">
+
+<!ELEMENT price (#PCDATA)>                              
+<!ATTLIST price
+          currency CDATA #REQUIRED>

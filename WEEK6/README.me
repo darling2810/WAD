@@ -1,0 +1,42 @@
+DTD Validation:
+
+Ensure bookstore.xml and bookstore.dtd are in the same directory.
+
+Install xmllint (if not already):
+
+sudo apt-get install libxml2-utils      # Debian/Ubuntu
+# or brew install libxml2                # macOS with Homebrew
+
+Run:
+
+xmllint --noout --dtdvalid bookstore.dtd bookstore.xml
+
+A successful validation prints nothing; errors report line numbers and issues.
+
+XSD Validation:
+
+Ensure bookstore.xml and bookstore.xsd are together.
+
+Edit bookstore.xml to reference the schema: replace the <!DOCTYPE...> line with:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<bookstore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="bookstore.xsd">
+
+and close with </bookstore> (no DOCTYPE).
+
+Run:
+
+xmllint --noout --schema bookstore.xsd bookstore.xml
+
+Alternatively, in Java, use Xerces:
+
+java -jar xercesImpl.jar -f bookstore.xml -noregistry -validate
+
+IDE/Editor Validation:
+
+Visual Studio Code: Install the "XML Tools" extension; open bookstore.xml, and it will highlight DTD/XSD errors.
+
+Oxygen XML Editor or Altova XMLSpy: Open the XML, assign the DTD/XSD, and run their validation commands.
+
+With these steps, you can run both DTD and XSD validations and inspect any structural or type errors in your Bookstore XML.

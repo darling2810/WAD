@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <!-- Enumerations for categories and era -->
+  <xs:simpleType name="CategoryType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Fiction"/>
+      <xs:enumeration value="Science"/>
+      <xs:enumeration value="Philosophy"/>
+      <xs:enumeration value="History"/>
+      <xs:enumeration value="Biography"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="EraType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AD"/>
+      <xs:enumeration value="BC"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Currency code: ISO 4217 -->
+  <xs:simpleType name="CurrencyType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Root element -->
+  <xs:element name="bookstore">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="book" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="title">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="lang" type="xs:language" default="en"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="author" type="xs:string"/>
+
+              <xs:element name="year">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:gYear">
+                      <xs:attribute name="era" type="EraType" default="AD"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="price">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:decimal">
+                      <xs:attribute name="currency" type="CurrencyType" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="category" type="CategoryType" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <!-- Ensure unique titles within the bookstore -->
+      <xs:unique name="uniqueTitle">
+        <xs:selector xpath="book"/>
+        <xs:field xpath="title"/>
+      </xs:unique>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

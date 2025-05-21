@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie-Based Session Demo</title>
+</head>
+<body>
+  <h2>Cookie Session Demo</h2>
+  <button id="loginBtn">Login</button>
+  <button id="logoutBtn">Logout</button>
+  <p id="status">Not logged in.</p>
+
+  <script>
+    // Create or update a cookie
+    const createCookie = (name, value, days) => {
+      let expires = '';
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24*60*60*1000);
+        expires = '; expires=' + date.toUTCString();
+      }
+      document.cookie = `${name}=${value || ''}${expires}; path=/; Secure; SameSite=Strict`;
+    };
+
+    // Read a cookie by name
+    const readCookie = name => {
+      const nameEQ = name + '=';
+      return document.cookie.split(';').reduce((acc, c) => {
+        c = c.trim();
+        return c.startsWith(nameEQ) ? c.substring(nameEQ.length) : acc;
+      }, null);
+    };
+
+    // Delete a cookie
+    const eraseCookie = name => {
+      document.cookie = `${name}=; Max-Age=-99999999; path=/`;
+    };
+
+    // Update UI based on session cookie
+    const updateStatus = () => {
+      const sessionId = readCookie('sessionId');
+      document.getElementById('status').textContent =
+        sessionId ? `Logged in ✓ (Session: ${sessionId})` : 'Not logged in.';
+    };
+
+    // Event handlers
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      // In real apps, sessionId would come from server after auth
+      createCookie('sessionId', 'abc123', 1);
+      updateStatus();
+    });
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      eraseCookie('sessionId');
+      updateStatus();
+    });
+
+    // On page load
+    updateStatus();
+  </script>
+</body>
+</html>
